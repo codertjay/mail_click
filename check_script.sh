@@ -2,8 +2,11 @@
 
 # Function to check if the Python script is running
 is_script_running() {
-    ps aux | grep "python click.py" | grep -v grep
+    ps aux | grep "python3 click.py" | grep -v grep
 }
+
+# Activate the virtual environment
+source /home/ubuntu/mail_click/venv
 
 # Loop to check and re-run the script every 30 minutes
 while true; do
@@ -11,7 +14,7 @@ while true; do
     if ! is_script_running; then
         echo "Script is not running. Re-running..."
         # Run the Python script using nohup and redirect output to nohup.out
-        nohup python click.py > nohup.out 2>&1 &
+        nohup python3 click.py > nohup.out 2>&1 &
     fi
 
     # Delay for 30 minutes (30 minutes = 1800 seconds)
