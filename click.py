@@ -16,8 +16,7 @@ BASE_URL = "https://www.google.com"
 
 class ClickAutomation:
     def __init__(self):
-        # s = Service(ChromeDriverManager().install())
-        s = Service("/home/ubuntu/mail_click/chromedriver/chromedriver")
+        s = Service(ChromeDriverManager().install())
         self.options = webdriver.ChromeOptions()
         self.options.add_argument('headless')
         # keep chrome open
