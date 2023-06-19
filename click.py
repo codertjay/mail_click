@@ -106,7 +106,7 @@ while True:
             print(a)
         print("Waiting for 10 seconds...")
         time.sleep(10)
-    time.sleep(10)
+    time.sleep(15)
 
 # close the mailbox
 imap.close()

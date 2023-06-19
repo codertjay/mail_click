@@ -20,3 +20,5 @@ Windows  `venv\Scripts\activate`
 `pip install -r  requirements.txt`
 
 Update your `.env` using the `.env-sample` provided
+
+Also the `check_script.sh` checks every 30 minutes and rerun the script if the server turns it off 
