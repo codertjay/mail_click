@@ -18,7 +18,7 @@ class ClickAutomation:
     def __init__(self):
         s = Service(ChromeDriverManager().install())
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('headless')
+        self.options.add_argument('headless')
         # keep chrome open
         # self.options.add_experimental_option("detach", True)
         self.options.add_experimental_option(
