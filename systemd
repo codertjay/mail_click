@@ -1,0 +1,12 @@
+[Unit]
+Description=My Script
+After=network.target
+
+[Service]
+ExecStart=/home/ubuntu/mail_click/venv/bin/python /home/ubuntu/mail_click/click.py
+WorkingDirectory=/home/ubuntu/mail_click
+Restart=always
+RestartSec=200
+
+[Install]
+WantedBy=multi-user.target
