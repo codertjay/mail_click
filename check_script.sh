@@ -14,9 +14,9 @@ while true; do
     if ! is_script_running; then
         echo "Script is not running. Re-running..."
         # Run the Python script using nohup and redirect output to nohup.out
-        nohup python3 click.py > nohup.out 2>&1 &
+        nohup /home/ubuntu/mail_click/venv/bin/python3 /home/ubuntu/mail_click/click.py > nohup.out 2>&1 &
     fi
 
     # Delay for 30 minutes (30 minutes = 1800 seconds)
-    sleep 1800
+    sleep 600
 done

@@ -3,7 +3,7 @@ Description=My Script
 After=network.target
 
 [Service]
-ExecStart=/home/ubuntu/mail_click/venv/bin/python /home/ubuntu/mail_click/click.py
+ExecStart=/home/ubuntu/mail_click/check_script.sh
 WorkingDirectory=/home/ubuntu/mail_click
 Restart=always
 RestartSec=200
