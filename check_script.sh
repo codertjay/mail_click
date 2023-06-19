@@ -6,7 +6,7 @@ is_script_running() {
 }
 
 # Activate the virtual environment
-source /home/ubuntu/mail_click/venv
+source /home/ubuntu/mail_click/venv/bin/activate
 
 # Loop to check and re-run the script every 30 minutes
 while true; do
