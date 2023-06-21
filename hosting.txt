@@ -1,0 +1,135 @@
+
+# Gunicorn.service Configuration
+
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/mail_click
+ExecStart=/home/ubuntu/mail_click/venv/bin/gunicorn \
+            --access-logfile - \
+            --workers 3--bind unix:/run/gunicorn.sock \
+            mail_click.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+# Nginx Configuration
+server {
+    listen 80;
+    server_name 24.199.114.239 api.ubuntu.ng;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/mail_click;
+    }
+    location /media/ {
+        root /home/ubuntu/mail_click;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+sudo ln -s /etc/nginx/sites-available/mail_click /etc/nginx/sites-enabled
+
+
+Celery Configuration systemd confuration in
+sudo nano /etc/systemd/system/celery.service
+
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/mail_click
+ExecStart=/home/ubuntu/mail_click/venv/bin/celery -A mail_click worker  --loglevel=info
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start celery
+sudo systemctl enable celery
+sudo systemctl status celery
+
+Celery beat
+sudo nano /etc/systemd/system/celerybeat.service
+
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/mail_click
+ExecStart=/home/ubuntu/mail_click/venv/bin/celery -A mail_click beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload
+sudo systemctl start celerybeat
+sudo systemctl enable celerybeat
+sudo systemctl status celerybeat
+
+
+
+
+
+
+
+# Nginx COnfiguration
+server {
+    server_name  api.ubuntu.ng;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/mail_click;
+    }
+    location /media/ {
+        root /home/ubuntu/mail_click;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/api.ubuntu.ng/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/api.ubuntu.ng/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = api.ubuntu.ng) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name 24.199.114.239 api.ubuntu.ng;
+    return 404; # managed by Certbot
+
+
+}
+
+
+
+
+
+
