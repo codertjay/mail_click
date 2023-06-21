@@ -1,4 +1,4 @@
-import email
+"""import email
 import imaplib
 import re
 import time
@@ -113,3 +113,4 @@ imap.close()
 
 # logout from the account
 imap.logout()
+"""
