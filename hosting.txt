@@ -1,6 +1,7 @@
 
 # Gunicorn.service Configuration
 
+
 [Unit]
 Description=gunicorn daemon
 Requires=gunicorn.socket
@@ -11,9 +12,10 @@ User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/mail_click
 ExecStart=/home/ubuntu/mail_click/venv/bin/gunicorn \
-            --access-logfile - \
-            --workers 3--bind unix:/run/gunicorn.sock \
-            mail_click.wsgi:application
+          --access-logfile - \
+          --workers 1 \
+          --bind unix:/run/gunicorn.sock \
+          mail_click.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -22,7 +24,7 @@ WantedBy=multi-user.target
 # Nginx Configuration
 server {
     listen 80;
-    server_name 24.199.114.239 api.ubuntu.ng;
+    server_name 13.51.242.63;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
